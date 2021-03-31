@@ -1,0 +1,43 @@
+local SHA_Hash_Methods = loadstring(game:HttpGet("https://gist.githubusercontent.com/PedroAlvesV/ea80f6724df49ace29eed03e7f75b589/raw/fe5787dbc242009e9be07438ab84d59c68e11082/sha2for51.lua"))() -- I don't have the time to recreate a hashing method
+
+local FileHook;
+FileHook = hookfunction(readfile, function(s) --Hooking all file instances
+	if s:find("ion") then -- If it's the ionhub key check
+		if FileHook("ionkey.txt") then -- Allow user to put whatever key they want
+			return "KEY_Standart_101101001011110100_HyPeR" -- This can be changed to anything that registers as a valid "key"
+		end
+	end
+	return FileHook(s)
+end)
+
+local Script = game:HttpGet("https://hypernite.xyz/PrivateCracks/IonHub_HashVersion/script.php") -- Get the script from my host
+local SHA512 = SHA_Hash_Methods.sha512 -- I know what method you use :eyes:
+local FakeValue = "f3CBQxvqELPZfphueLPJnsEZ2L014y" --Found out this begins and ends every hashed data packet
+
+local HttpHook;
+HttpHook = hookfunction(game.HttpGet, function(gameInstance, Link, ...)
+	if (Link:find("KEY")) then
+		local Info = string.sub(Link, 88) -- Remove the beginning of the link
+		Info = string.split(Info, "&")[1] -- Split &, this gives us the Info= data
+		local Key = readfile("ionkey.txt") -- Callback to my FileHook to grab the key
+		local dataToReturn = SHA512(FakeValue..Key..Info..FakeValue) -- Fake the response and make it what it's expecting
+		return dataToReturn -- Send that response
+	end
+	return HttpHook(gameInstance, Link, ...) -- Allow other scripts to run normally
+end)
+
+
+local SynRequest = syn.request -- Old syn.request before hooking
+setreadonly(syn, false) -- Allow syn.request to be modified
+syn.request = function(Table)
+	if (Table["Url"]:find("get")) then -- Get request for header
+		local NewReturn = {} -- Fake a table
+		NewReturn["Body"] = "SomeoneCrackedThis" -- Why not
+		return NewReturn -- Send that response
+	end
+	return SynRequest(Table) -- Allow other scripts to run normally
+end
+setreadonly(syn, true) -- Don't allow readonly checks to stop me
+
+
+loadstring(Script)()

@@ -1,3 +1,3 @@
-# ScriptDumb
+# This is where i just put stuff
 
-basicly a dumb of all of my scripts
+basicly a a dump but i know you've prob came here for dark hub ui

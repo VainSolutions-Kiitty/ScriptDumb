@@ -1,7 +1,6 @@
-## Welcome to GitHub Pages
 
 Lets get you started with dark hub ui.
-### Importing the ui
+## Importing the ui
 This is not my fault if you get introuble using this well intresting ui 
 
 Lets start by importing the ui by doing

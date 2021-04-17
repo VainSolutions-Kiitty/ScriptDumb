@@ -13,6 +13,6 @@ So far this will only show a window because we haven added any buttons or tabs. 
 ### Adding a ui
 
 lets add a tab to start
-```markdown
+```Adding a ui
 Hewwo = main:Tab('Welcome')
 ```
